@@ -1,0 +1,297 @@
+name: "mxnet-mdoel"
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param {
+    shape: { dim: 1 dim: 3 dim: 50 dim: 50 }
+  }
+}
+
+layer {
+	bottom: "data"
+	top: "conv1"
+	name: "conv1"
+	type: "Convolution"
+	convolution_param {
+		num_output: 32
+		kernel_size: 3
+		pad: 1
+		stride: 1
+		bias_term: true
+	}
+	param {
+	  name: "data"
+	}
+}
+
+layer {
+  bottom: "conv1"
+  top: "relu_conv1"
+  name: "relu_conv1"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv1"
+	top: "conv2"
+	name: "conv2"
+	type: "Convolution"
+	convolution_param {
+		num_output: 64
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "conv2"
+  top: "relu_conv2"
+  name: "relu_conv2"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv2"
+	top: "conv3"
+	name: "conv3"
+	type: "Convolution"
+	convolution_param {
+		num_output: 64
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "conv3"
+  top: "relu_conv3"
+  name: "relu_conv3"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv3"
+	top: "conv4"
+	name: "conv4"
+	type: "Convolution"
+	convolution_param {
+		num_output: 80
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "conv4"
+  top: "relu_conv4"
+  name: "relu_conv4"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv4"
+	top: "conv5"
+	name: "conv5"
+	type: "Convolution"
+	convolution_param {
+		num_output: 80
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "conv5"
+  top: "relu_conv5"
+  name: "relu_conv5"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv5"
+	top: "conv6"
+	name: "conv6"
+	type: "Convolution"
+	convolution_param {
+		num_output: 128
+		kernel_size: 4
+		pad: 0
+		stride: 1
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "conv6"
+  top: "relu_conv6"
+  name: "relu_conv6"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_conv6"
+	top: "deconv1"
+	name: "deconv1"
+	type: "Deconvolution"
+	convolution_param {
+		num_output: 80
+		kernel_size: 4
+		pad: 0
+		stride: 1
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "deconv1"
+  top: "relu_deconv1"
+  name: "relu_deconv1"
+  type: "ReLU"
+}
+
+layer {
+  name: "fusion1"
+  type: "Concat"
+  bottom: "relu_deconv1"
+  bottom: "relu_conv5"
+  top: "fusion1"
+}
+
+layer {
+	bottom: "fusion1"
+	top: "deconv2"
+	name: "deconv2"
+	type: "Deconvolution"
+	convolution_param {
+		num_output: 80
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "deconv2"
+  top: "relu_deconv2"
+  name: "relu_deconv2"
+  type: "ReLU"
+}
+
+layer {
+  name: "fusion2"
+  type: "Concat"
+  bottom: "relu_deconv2"
+  bottom: "relu_conv4"
+  top: "fusion2"
+}
+
+layer {
+	bottom: "fusion2"
+	top: "deconv3"
+	name: "deconv3"
+	type: "Deconvolution"
+	convolution_param {
+		num_output: 64
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "deconv3"
+  top: "relu_deconv3"
+  name: "relu_deconv3"
+  type: "ReLU"
+}
+
+layer {
+  name: "fusion3"
+  type: "Concat"
+  bottom: "relu_deconv3"
+  bottom: "relu_conv3"
+  top: "fusion3"
+}
+
+layer {
+	bottom: "fusion3"
+	top: "deconv4"
+	name: "deconv4"
+	type: "Deconvolution"
+	convolution_param {
+		num_output: 64
+		kernel_size: 3
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "deconv4"
+  top: "relu_deconv4"
+  name: "relu_deconv4"
+  type: "ReLU"
+}
+
+layer {
+  name: "fusion4"
+  type: "Concat"
+  bottom: "relu_deconv4"
+  bottom: "relu_conv2"
+  top: "fusion4"
+}
+
+layer {
+	bottom: "fusion4"
+	top: "deconv5"
+	name: "deconv5"
+	type: "Deconvolution"
+	convolution_param {
+		num_output: 64
+		kernel_size: 4
+		pad: 1
+		stride: 2
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "deconv5"
+  top: "relu_deconv5"
+  name: "relu_deconv5"
+  type: "ReLU"
+}
+
+layer {
+	bottom: "relu_deconv5"
+	top: "predict_conv"
+	name: "predict_conv"
+	type: "Convolution"
+	convolution_param {
+		num_output: 5
+		kernel_size: 1
+		pad: 0
+		stride: 1
+		bias_term: true
+	}
+}
+
+layer {
+  bottom: "predict_conv"
+  top: "sigmoid_predict_conv"
+  name: "sigmoid_predict_conv"
+  type: "ReLU"
+}
+
